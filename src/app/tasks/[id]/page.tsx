@@ -3,11 +3,13 @@
 import apiClient from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function TaskDetailPage() {
   const params = useParams();
   const { id } = params;
+  const router = useRouter();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["tasks", id],
@@ -15,6 +17,7 @@ export default function TaskDetailPage() {
       const response = await apiClient.get(`/tasks/${id}`);
       return response.data;
     },
+    staleTime: 0,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -32,6 +35,14 @@ export default function TaskDetailPage() {
       console.error("データの更新に失敗しました", error);
       alert("データの更新に失敗しました");
     }
+  };
+
+  const handleDelete = async () => {
+    const userConfirmed = window.confirm("本当に削除しますか？");
+    if (!userConfirmed) return;
+
+    await apiClient.delete(`/tasks/${id}`);
+    router.push("/tasks");
   };
 
   const [title, setTitle] = useState("");
@@ -65,6 +76,7 @@ export default function TaskDetailPage() {
           <button type="submit">更新</button>
         </div>
       </form>
+      <button onClick={handleDelete}>削除</button>
     </>
   );
 }

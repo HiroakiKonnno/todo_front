@@ -13,6 +13,7 @@ export default function TaskList() {
       const response = await apiClient.get("/tasks");
       return response.data;
     },
+    staleTime: 0,
   });
 
   const [text, setText] = useState<string>("");
