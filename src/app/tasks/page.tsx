@@ -3,6 +3,7 @@
 import { Task } from "@/app/types/task";
 import apiClient from "@/lib/axios";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function TaskList() {
@@ -34,20 +35,22 @@ export default function TaskList() {
   if (isError) return <p>データの取得に失敗しました</p>;
 
   return (
-    <main>
+    <>
       <h1>Todoリスト</h1>
       <div>
         <input
           type="text"
           placeholder={"todoを入力してください"}
-          value={text}
           onChange={(e) => addText(e.target.value)}
         />
         <button onClick={addTask}>追加</button>
       </div>
-      {data.map((todo: Task) => {
-        return <li key={todo.id}>{todo.title}</li>;
-      })}
-    </main>
+      {data.map((todo: Task) => (
+        <li key={`li-${todo.id}`}>
+          {todo.title}
+          <Link href={`/tasks/${todo.id}`}>詳細</Link>
+        </li>
+      ))}
+    </>
   );
 }
