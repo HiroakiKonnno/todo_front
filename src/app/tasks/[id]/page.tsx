@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import styles from "../../styles/taskForm.module.css";
 
 export default function TaskDetailPage() {
   const params = useParams();
@@ -60,23 +61,29 @@ export default function TaskDetailPage() {
 
   return (
     <>
-      <h1>タスクの詳細ページ</h1>
+      <h1 className={styles.title}>タスクの詳細ページ</h1>
       <form onSubmit={handleSubmit}>
-        <p>タイトル</p>
+        <p className={styles.label}>タイトル</p>
         <input
           value={title != undefined ? title : data.title}
           onChange={(e) => setTitle(e.target.value)}
+          className={styles.inputField}
         />
-        <p>内容</p>
+        <p className={styles.label}>内容</p>
         <input
           value={content != undefined ? content : data.content}
           onChange={(e) => setContent(e.target.value)}
+          className={styles.textareaField}
         />
         <div>
-          <button type="submit">更新</button>
+          <button type="submit" className={styles.buttonPrimary}>
+            更新
+          </button>
         </div>
       </form>
-      <button onClick={handleDelete}>削除</button>
+      <button onClick={handleDelete} className={styles.buttonDanger}>
+        削除
+      </button>
     </>
   );
 }
