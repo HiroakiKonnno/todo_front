@@ -6,6 +6,8 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useState } from "react";
 import styles from "../styles/todoList.module.css";
+import flashStyles from "../styles/messages.module.css";
+import { useFlashMessage } from "../context/FlashMessageContext";
 
 export default function TaskList() {
   const { data, isLoading, isError } = useQuery({
@@ -32,12 +34,14 @@ export default function TaskList() {
   const addText = (t: string) => {
     setText(t);
   };
+  const { message } = useFlashMessage();
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>データの取得に失敗しました</p>;
 
   return (
     <>
+      {message && <div className={flashStyles.flash}>{message}</div>}
       <h1 className={styles.title}>Todoリスト</h1>
       <div>
         <input

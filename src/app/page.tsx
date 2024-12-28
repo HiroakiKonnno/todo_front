@@ -4,11 +4,13 @@ import { useState } from "react";
 import styles from "./styles/login.module.css";
 import apiClient from "@/lib/axios";
 import { useRouter } from "next/navigation";
+import { useFlashMessage } from "./context/FlashMessageContext";
 
 export default function Welcome() {
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+  const { setFlashMessage } = useFlashMessage();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,8 +20,7 @@ export default function Welcome() {
         login_id: loginId,
         password: password,
       });
-
-      alert("ログインしました！");
+      setFlashMessage("ログインに成功しました！");
       router.push("/tasks");
     } catch (error) {
       console.error("ログインできませんでした", error);
@@ -41,7 +42,7 @@ export default function Welcome() {
         <input
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className={styles.textareaField}
+          className={styles.inputField}
         />
         <div>
           <button type="submit" className={styles.buttonPrimary}>
