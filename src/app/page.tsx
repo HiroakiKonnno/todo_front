@@ -5,21 +5,33 @@ import styles from "./styles/login.module.css";
 import apiClient from "@/lib/axios";
 import { useRouter } from "next/navigation";
 import { useFlashMessage } from "./context/FlashMessageContext";
+import { useDispatch } from "react-redux";
+import { login } from "./store/authSlice";
+import { User } from "./types/user";
 
 export default function Welcome() {
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
   const { setFlashMessage } = useFlashMessage();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      await apiClient.post(`/signin`, {
-        login_id: loginId,
-        password: password,
-      });
+      const res: { data: { message: string; user: User } } =
+        await apiClient.post(`/signin`, {
+          login_id: loginId,
+          password: password,
+        });
+      dispatch(
+        login({
+          id: res.data.user.id,
+          loginId: res.data.user.login_id,
+          name: res.data.user.name,
+        })
+      );
       setFlashMessage("ログインに成功しました！");
       router.push("/tasks");
     } catch (error) {
