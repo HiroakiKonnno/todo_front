@@ -6,7 +6,7 @@ import apiClient from "@/lib/axios";
 import { useRouter } from "next/navigation";
 import { useFlashMessage } from "./context/FlashMessageContext";
 import { useDispatch } from "react-redux";
-import { login } from "./store/authSlice";
+import { login } from "./store/userSlice";
 import { User } from "./types/user";
 
 export default function Welcome() {
