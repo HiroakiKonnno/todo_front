@@ -3,8 +3,20 @@
 import { queryClient } from "@/lib/client";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { FlashMessageProvider } from "./context/FlashMessageContext";
-import { Provider } from "react-redux";
-import store from "./store";
+import { Provider, useDispatch as useReduxDispatch } from "react-redux";
+import store, { AppDispatch } from "./store";
+import { useEffect } from "react";
+import { fetchUserIfNeeded } from "./store/userSlice";
+
+function AppInitializer({ children }: { children: React.ReactNode }) {
+  const dispatch = useReduxDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(fetchUserIfNeeded());
+  }, [dispatch]);
+
+  return <>{children}</>;
+}
 
 export default function ClientProvider({
   children,
@@ -17,7 +29,7 @@ export default function ClientProvider({
         <html lang="ja">
           <body>
             <QueryClientProvider client={queryClient}>
-              {children}
+              <AppInitializer>{children}</AppInitializer>
             </QueryClientProvider>
           </body>
         </html>
