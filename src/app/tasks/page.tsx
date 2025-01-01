@@ -8,6 +8,8 @@ import { useState } from "react";
 import styles from "../styles/todoList.module.css";
 import flashStyles from "../styles/messages.module.css";
 import { useFlashMessage } from "../context/FlashMessageContext";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 export default function TaskList() {
   const { data, isLoading, isError } = useQuery({
@@ -18,13 +20,14 @@ export default function TaskList() {
     },
     staleTime: 0,
   });
+  const user = useSelector((state: RootState) => state.user.user);
 
   const [text, setText] = useState<string>("");
   const queryClient = useQueryClient();
 
   const addTask = async () => {
     try {
-      await apiClient.post("/tasks", { title: text });
+      await apiClient.post("/tasks", { title: text, user_id: user?.id });
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
     } catch (error) {
       console.error("タスクの作成に失敗しました", error);
