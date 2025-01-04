@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./styles/login.module.css";
 import apiClient from "@/lib/axios";
 import { useRouter } from "next/navigation";
 import { useFlashMessage } from "./context/FlashMessageContext";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "./store/userSlice";
 import { User } from "./types/user";
+import { RootState } from "./store";
 
 export default function Welcome() {
   const [loginId, setLoginId] = useState("");
@@ -15,6 +16,13 @@ export default function Welcome() {
   const router = useRouter();
   const { setFlashMessage } = useFlashMessage();
   const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user.user);
+
+  useEffect(() => {
+    if (user) {
+      router.push("/tasks");
+    }
+  }, [user, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
