@@ -7,6 +7,7 @@ import { Provider, useDispatch as useReduxDispatch } from "react-redux";
 import store, { AppDispatch } from "./store";
 import { useEffect } from "react";
 import { fetchUserIfNeeded } from "./store/userSlice";
+import "./styles/global.css";
 
 function AppInitializer({ children }: { children: React.ReactNode }) {
   const dispatch = useReduxDispatch<AppDispatch>();

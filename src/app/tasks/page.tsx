@@ -10,6 +10,7 @@ import flashStyles from "../styles/messages.module.css";
 import { useFlashMessage } from "../context/FlashMessageContext";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import { Header } from "../componetnts/header";
 
 export default function TaskList() {
   const { data, isLoading, isError } = useQuery({
@@ -44,27 +45,30 @@ export default function TaskList() {
 
   return (
     <>
-      {message && <div className={flashStyles.flash}>{message}</div>}
-      <h1 className={styles.title}>Todoリスト</h1>
-      <div>
-        <input
-          type="text"
-          placeholder={"todoを入力してください"}
-          onChange={(e) => addText(e.target.value)}
-          className={styles.inputField}
-        />
-        <button onClick={addTask} className={styles.addButton}>
-          追加
-        </button>
+      <Header />
+      <div className={styles.container}>
+        {message && <div className={flashStyles.flash}>{message}</div>}
+        <h1 className={styles.title}>Todoリスト</h1>
+        <div>
+          <input
+            type="text"
+            placeholder={"todoを入力してください"}
+            onChange={(e) => addText(e.target.value)}
+            className={styles.inputField}
+          />
+          <button onClick={addTask} className={styles.addButton}>
+            追加
+          </button>
+        </div>
+        {data.map((todo: Task) => (
+          <li key={`li-${todo.id}`} className={styles.todoItem}>
+            {todo.title}
+            <Link href={`/tasks/${todo.id}`} className={styles.link}>
+              詳細
+            </Link>
+          </li>
+        ))}
       </div>
-      {data.map((todo: Task) => (
-        <li key={`li-${todo.id}`} className={styles.todoList}>
-          {todo.title}
-          <Link href={`/tasks/${todo.id}`} className={styles.link}>
-            詳細
-          </Link>
-        </li>
-      ))}
     </>
   );
 }

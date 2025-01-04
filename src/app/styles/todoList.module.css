@@ -1,9 +1,9 @@
 .container {
-  @apply max-w-md mx-auto mt-10 p-4 bg-white shadow-md rounded-lg;
+  @apply max-w-md mx-auto m-4 p-4 bg-white rounded-lg;
 }
 
 .title {
-  @apply text-3xl font-bold mb-4 text-center;
+  @apply text-3xl font-bold m-4 text-center;
 }
 
 .inputField {
@@ -19,7 +19,7 @@
 }
 
 .todoItem {
-  @apply flex items-center justify-between;
+  @apply flex items-center justify-between m-4;
 }
 
 .link {

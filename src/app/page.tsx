@@ -41,7 +41,7 @@ export default function Welcome() {
   };
 
   return (
-    <>
+    <div className={styles.container}>
       <h1 className={styles.title}>ログインページ</h1>
       <form onSubmit={handleSubmit}>
         <p className={styles.label}>ユーザID</p>
@@ -62,6 +62,6 @@ export default function Welcome() {
           </button>
         </div>
       </form>
-    </>
+    </div>
   );
 }
