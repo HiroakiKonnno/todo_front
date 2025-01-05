@@ -46,8 +46,8 @@ export default function TaskList() {
   return (
     <>
       <Header />
+      {message && <div className={flashStyles.flash}>{message}</div>}
       <div className={styles.container}>
-        {message && <div className={flashStyles.flash}>{message}</div>}
         <h1 className={styles.title}>Todoリスト</h1>
         <div>
           <input
