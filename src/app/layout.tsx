@@ -30,6 +30,7 @@ function AppInitializer({ children }: { children: React.ReactNode }) {
   const user = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
+    console.log(user);
     if (!loading && !user) {
       router.push("/");
     }
