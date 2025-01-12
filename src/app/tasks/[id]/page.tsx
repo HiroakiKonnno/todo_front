@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import styles from "../../styles/taskForm.module.css";
 import { Header } from "@/app/componetnts/header";
 import { useFlashMessage } from "@/app/context/FlashMessageContext";
+import { Calender } from "@/app/componetnts/calender";
 
 export default function TaskDetailPage() {
   const params = useParams();
@@ -24,6 +25,21 @@ export default function TaskDetailPage() {
     staleTime: 0,
   });
 
+  const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(
+    new Date()
+  );
+  const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(
+    new Date()
+  );
+
+  const handleStartDateChange = (date: Date | null) => {
+    setSelectedStartDate(date);
+  };
+
+  const handleEndDateChange = (date: Date | null) => {
+    setSelectedEndDate(date);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -32,6 +48,8 @@ export default function TaskDetailPage() {
       await apiClient.patch(`/tasks/${id}`, {
         title: title,
         content: content,
+        start_date: selectedStartDate,
+        end_date: selectedEndDate,
       });
 
       setFlashMessage("更新に成功しました！");
@@ -81,6 +99,18 @@ export default function TaskDetailPage() {
             value={content != undefined ? content : data.content}
             onChange={(e) => setContent(e.target.value)}
             className={styles.inputField}
+          />
+          <Calender
+            label="開始時期"
+            id="start"
+            handleDateChange={handleStartDateChange}
+            selectedDate={selectedStartDate}
+          />
+          <Calender
+            label="完了時期"
+            id="end"
+            handleDateChange={handleEndDateChange}
+            selectedDate={selectedEndDate}
           />
           <div>
             <button type="submit" className={styles.buttonPrimary}>

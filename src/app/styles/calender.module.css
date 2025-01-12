@@ -1,0 +1,7 @@
+.label {
+  @apply block text-lg font-medium;
+}
+
+.form {
+  @apply w-full border border-gray-300 rounded-md p-2 focus:border-blue-500 focus:ring focus:ring-blue-200 mb-2;
+}
