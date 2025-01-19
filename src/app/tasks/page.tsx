@@ -22,6 +22,7 @@ export default function TaskList() {
     staleTime: 0,
   });
   const user = useSelector((state: RootState) => state.user.user);
+  const { setFlashMessage } = useFlashMessage();
 
   const [text, setText] = useState<string>("");
   const queryClient = useQueryClient();
@@ -30,23 +31,22 @@ export default function TaskList() {
     try {
       await apiClient.post("/tasks", { title: text, user_id: user?.id });
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
-    } catch (error) {
-      console.error("タスクの作成に失敗しました", error);
+    } catch {
+      setFlashMessage("作成に失敗しました", "fail");
     }
   };
 
   const addText = (t: string) => {
     setText(t);
   };
-  const { message } = useFlashMessage();
-
+  const { message, type } = useFlashMessage();
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>データの取得に失敗しました</p>;
 
   return (
     <>
       <Header />
-      {message && <div className={flashStyles.flash}>{message}</div>}
+      {message && type && <div className={flashStyles[type]}>{message}</div>}
       <div className={styles.container}>
         <h1 className={styles.title}>Todoリスト</h1>
         <div>

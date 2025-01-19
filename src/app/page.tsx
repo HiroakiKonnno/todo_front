@@ -9,14 +9,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "./store/userSlice";
 import { User } from "./types/user";
 import { RootState } from "./store";
+import flashStyles from "./styles/messages.module.css";
 
 export default function Welcome() {
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-  const { setFlashMessage } = useFlashMessage();
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user.user);
+  const { message, type, setFlashMessage } = useFlashMessage();
 
   useEffect(() => {
     if (user) {
@@ -40,16 +41,16 @@ export default function Welcome() {
           name: res.data.user.name,
         })
       );
-      setFlashMessage("ログインに成功しました！");
+      setFlashMessage("ログインに成功しました！", "success");
       router.push("/tasks");
-    } catch (error) {
-      console.error("ログインできませんでした", error);
-      alert("ログインできませんでした");
+    } catch {
+      setFlashMessage("ログインに失敗しました", "fail");
     }
   };
 
   return (
     <div className={styles.container}>
+      {message && type && <div className={flashStyles[type]}>{message}</div>}
       <h1 className={styles.title}>ログインページ</h1>
       <form onSubmit={handleSubmit}>
         <p className={styles.label}>ユーザID</p>

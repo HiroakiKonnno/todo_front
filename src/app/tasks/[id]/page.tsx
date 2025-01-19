@@ -56,11 +56,10 @@ export default function TaskDetailPage() {
         end_date: selectedEndDate,
       });
 
-      setFlashMessage("更新に成功しました！");
+      setFlashMessage("更新に成功しました！", "success");
       router.push("/tasks");
-    } catch (error) {
-      console.error("データの更新に失敗しました", error);
-      setFlashMessage("削除に成功しました！");
+    } catch {
+      setFlashMessage("削除に成功しました！", "success");
       router.push("/tasks");
     }
   };
