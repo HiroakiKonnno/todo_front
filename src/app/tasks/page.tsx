@@ -27,15 +27,6 @@ export default function TaskList() {
   const [text, setText] = useState<string>("");
   const queryClient = useQueryClient();
 
-  const addTask = async () => {
-    try {
-      await apiClient.post("/tasks", { title: text, user_id: user?.id });
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
-    } catch {
-      setFlashMessage("作成に失敗しました", "fail");
-    }
-  };
-
   const addText = (t: string) => {
     setText(t);
   };
@@ -49,21 +40,13 @@ export default function TaskList() {
       {message && type && <div className={flashStyles[type]}>{message}</div>}
       <div className={styles.container}>
         <h1 className={styles.title}>Todoリスト</h1>
-        <div>
-          <input
-            type="text"
-            placeholder={"todoを入力してください"}
-            onChange={(e) => addText(e.target.value)}
-            className={styles.inputField}
-          />
-          <button onClick={addTask} className={styles.addButton}>
-            追加
-          </button>
-        </div>
+        <Link href={`/tasks/new`} className={styles.link}>
+          <button className={styles.addButton}>作成</button>
+        </Link>
         {data.map((todo: Task) => (
           <li key={`li-${todo.id}`} className={styles.todoItem}>
             {todo.title}
-            <Link href={`/tasks/${todo.id}`} className={styles.link}>
+            <Link href={`/tasks/edit/${todo.id}`} className={styles.link}>
               詳細
             </Link>
           </li>

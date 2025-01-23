@@ -6,7 +6,7 @@ type Props = {
   label: string;
   id: string;
   handleDateChange: (date: Date) => void;
-  selectedDate: Date;
+  selectedDate: Date | null;
 };
 
 export const Calender = ({
