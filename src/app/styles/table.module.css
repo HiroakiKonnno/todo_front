@@ -1,0 +1,23 @@
+.tableContainer {
+  @apply max-w-4xl mx-auto mt-8 shadow-lg rounded-lg overflow-hidden;
+}
+
+.tableHeader {
+  @apply bg-gray-800 text-white text-left uppercase text-sm font-bold;
+}
+
+.tableRow {
+  @apply bg-white even:bg-gray-100 text-gray-800;
+}
+
+.tableCell {
+  @apply px-6 py-4 border-b border-gray-200;
+}
+
+.tableAction {
+  @apply text-blue-500 hover:underline cursor-pointer;
+}
+
+.link {
+  @apply text-blue-500 hover:underline hover:text-blue-600;
+}
