@@ -61,6 +61,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({
   const router = useRouter();
   const { setFlashMessage } = useFlashMessage();
 
+  console.log(selectedEndDate);
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>
