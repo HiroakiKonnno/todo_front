@@ -20,6 +20,27 @@ export default function TaskList() {
     staleTime: 0,
   });
 
+  const { setFlashMessage } = useFlashMessage();
+
+  const handleExport = async () => {
+    try {
+      const response = await apiClient.post("/tasks/export", {
+        responseType: "blob",
+      });
+      const blob = new Blob([response.data], { type: "text/csv" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "tasks.csv";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setFlashMessage("csvの出力を開始しました", "success");
+    } catch {
+      setFlashMessage("csvの出力に失敗しました", "fail");
+    }
+  };
+
   const { message, type } = useFlashMessage();
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>データの取得に失敗しました</p>;
@@ -33,6 +54,9 @@ export default function TaskList() {
         <Link href={`/tasks/new`} className={styles.link}>
           <button className={styles.addButton}>作成</button>
         </Link>
+        <button className={styles.addButton} onClick={() => handleExport()}>
+          CSVエクスポート
+        </button>
         <Table tasks={data as Task[]} />
       </div>
     </>
