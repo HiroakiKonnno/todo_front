@@ -9,18 +9,39 @@ import flashStyles from "../styles/messages.module.css";
 import { useFlashMessage } from "../context/FlashMessageContext";
 import { Header } from "../componetnts/header";
 import { Table } from "../componetnts/table";
+import { Calender } from "../componetnts/calender";
+import { format, parse } from "date-fns";
+import { useState } from "react";
 
 export default function TaskList() {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["tasks"],
     queryFn: async () => {
-      const response = await apiClient.get("/tasks");
+      const response = await apiClient.get("/tasks", {
+        params: {
+          start_date: "",
+          end_date: "",
+        },
+      });
       return response.data;
     },
     staleTime: 0,
   });
 
   const { setFlashMessage } = useFlashMessage();
+
+  const [selectedStartDate, setSelectedStartDate] = useState<string | null>(
+    null
+  );
+  const [selectedEndDate, setSelectedEndDate] = useState<string | null>(null);
+
+  const handleStartDateChange = (date: Date) => {
+    setSelectedStartDate(format(date, "yyyy-MM-dd"));
+  };
+
+  const handleEndDateChange = (date: Date) => {
+    setSelectedEndDate(format(date, "yyyy-MM-dd"));
+  };
 
   const handleExport = async () => {
     try {
@@ -48,7 +69,9 @@ export default function TaskList() {
   return (
     <>
       <Header />
+
       {message && type && <div className={flashStyles[type]}>{message}</div>}
+
       <div className={styles.container}>
         <h1 className={styles.title}>Todoリスト</h1>
         <Link href={`/tasks/new`} className={styles.link}>
@@ -57,6 +80,28 @@ export default function TaskList() {
         <button className={styles.addButton} onClick={() => handleExport()}>
           CSVエクスポート
         </button>
+        <div className="flex m-5">
+          <Calender
+            label="開始日時"
+            id="start"
+            handleDateChange={handleStartDateChange}
+            selectedDate={
+              selectedStartDate
+                ? parse(selectedStartDate, "yyyy-MM-dd", new Date())
+                : null
+            }
+          />
+          <Calender
+            label="終了日時"
+            id="end"
+            handleDateChange={handleEndDateChange}
+            selectedDate={
+              selectedEndDate
+                ? parse(selectedEndDate, "yyyy-MM-dd", new Date())
+                : null
+            }
+          />
+        </div>
         <Table tasks={data as Task[]} />
       </div>
     </>
