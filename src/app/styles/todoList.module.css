@@ -23,5 +23,5 @@
 }
 
 .link {
-  @apply text-blue-500 hover:underline hover:text-blue-600 px-4;
+  @apply text-blue-500 hover:underline hover:text-blue-600;
 }
