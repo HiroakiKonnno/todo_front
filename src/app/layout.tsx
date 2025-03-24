@@ -12,11 +12,12 @@ import store, { AppDispatch, RootState } from "./store";
 import { useEffect, useState } from "react";
 import { fetchUserIfNeeded } from "./store/userSlice";
 import "./styles/global.css";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 function AppInitializer({ children }: { children: React.ReactNode }) {
   const dispatch = useReduxDispatch<AppDispatch>();
   const [loading, setLoading] = useState(true);
+  const pathname = usePathname();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -30,11 +31,11 @@ function AppInitializer({ children }: { children: React.ReactNode }) {
   const user = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
-    console.log(user);
-    if (!loading && !user) {
+    console.log(pathname);
+    if (!loading && !user && pathname !== "/signup") {
       router.push("/");
     }
-  }, [user, router, loading]);
+  }, [user, router, loading, pathname]);
 
   if (loading) {
     return <div>Loading...</div>;

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import styles from "./styles/login.module.css";
+import styles from "./styles/signup.module.css";
 import apiClient from "@/lib/axios";
 import { useRouter } from "next/navigation";
 import { useFlashMessage } from "./context/FlashMessageContext";
@@ -10,6 +10,7 @@ import { login } from "./store/userSlice";
 import { User } from "./types/user";
 import { RootState } from "./store";
 import flashStyles from "./styles/messages.module.css";
+import Link from "next/link";
 
 export default function Welcome() {
   const [loginId, setLoginId] = useState("");
@@ -49,28 +50,35 @@ export default function Welcome() {
   };
 
   return (
-    <div className={styles.container}>
-      {message && type && <div className={flashStyles[type]}>{message}</div>}
-      <h1 className={styles.title}>ログインページ</h1>
-      <form onSubmit={handleSubmit}>
-        <p className={styles.label}>ユーザID</p>
-        <input
-          value={loginId}
-          onChange={(e) => setLoginId(e.target.value)}
-          className={styles.inputField}
-        />
-        <p className={styles.label}>パスワード</p>
-        <input
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className={styles.inputField}
-        />
-        <div>
-          <button type="submit" className={styles.buttonPrimary}>
-            ログイン
-          </button>
-        </div>
-      </form>
-    </div>
+    <>
+      <div className={styles.container}>
+        {message && type && <div className={flashStyles[type]}>{message}</div>}
+        <h1 className={styles.title}>ログインページ</h1>
+        <form onSubmit={handleSubmit}>
+          <p className={styles.label}>ユーザID</p>
+          <input
+            value={loginId}
+            onChange={(e) => setLoginId(e.target.value)}
+            className={styles.inputField}
+          />
+          <p className={styles.label}>パスワード</p>
+          <input
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className={styles.inputField}
+          />
+          <div>
+            <button type="submit" className={styles.buttonPrimary}>
+              ログイン
+            </button>
+          </div>
+        </form>
+      </div>
+      <div className={styles.link}>
+        <Link href={`/signup`} className={styles.buttonPrimary}>
+          アカウント作成
+        </Link>
+      </div>
+    </>
   );
 }
